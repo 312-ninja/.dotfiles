@@ -1,0 +1,255 @@
+# i3 config
+# dave@312.ninja
+
+set $mod Mod4
+
+font pango:Noto Sans Book 12
+floating_modifier $mod
+focus_follows_mouse no
+
+# start a terminal
+bindsym $mod+Return exec terminator
+
+set $darkred     #8e0909
+set $red         #ad0000
+set $darkgreen   #147508
+set $green       #20c60b
+set $darkyellow  #a39500
+set $yellow      #dbc908
+set $darkblue    #061f7c
+set $blue        #33cfe0
+set $darkmagenta #75058e
+set $magenta     #af0cd3
+set $darkcyan    #06a59d
+set $cyan        #42d4f4
+set $darkwhite   #fffbea
+set $white       #fffbea
+# Use custom colors for black
+set $black       #282828
+set $darkgrey    #949494
+set $darkblack   #1d2021
+set $transparent #00000000
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# start rofi
+bindsym $mod+d exec --no-startup-id "rofi -theme davey-red -show drun -display-drun run"
+bindsym $mod+Shift+d exec --no-startup-id "rofi -theme davey-red -show window"
+bindsym $mod+z exec --no-startup-id "rofi -theme davey-red -modi 'clipboard:greenclip print' -show clipboard -run-command '{cmd}'"
+bindsym Control+Shift+z exec --no-startup-id "rofi -theme davey-red -modi 'clipboard:greenclip print' -show clipboard -run-command '{cmd}'"
+bindsym Control+Shift+x exec --no-startup-id "rofi-pass"
+
+# change focus
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+
+# Define names for default workspaces for which we configure key bindings later on.
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        bindsym Left resize shrink width 4 px or 4 ppt
+        bindsym Down resize grow height 4 px or 4 ppt
+        bindsym Up resize shrink height 4 px or 4 ppt
+        bindsym Right resize grow width 4 px or 4 ppt
+
+        # back to normal: Enter or Escape or $mod+r
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Pulse Audio controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +2% #increase sound volume
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -2% #decrease sound volume
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+# Sreen brightness controls
+bindsym XF86MonBrightnessUp exec xbacklight -inc 10 # increase screen brightness
+bindsym XF86MonBrightnessDown exec xbacklight -dec 10 # decrease screen brightness
+
+bindsym $mod+l exec /usr/bin/slimlock
+#bindsym $mod+l exec /home/davey/.config/i3/i3lock.sh
+#bindsym $mod+l exec GLITCHICON=/home/davey/.config/i3/stop.png /home/davey/.config/i3/i3lock.sh
+bindsym $mod+Shift+s exec /home/davey/.config/i3/scrot.sh
+bindsym $mod+Shift+l exec lock -s
+bindsym $mod+n exec i3-input -F 'rename workspace to "%s"' -P 'Rename workspace: '
+
+bar {
+#    verbose yes
+    status_command i3blocks -c $HOME/.config/i3blocks/top.conf
+    i3bar_command i3bar -t
+    output DisplayPort-2
+    position top
+    tray_output DisplayPort-2
+    tray_padding 3
+    workspace_buttons yes
+    font pango:DejaVu, FontAwesome 14
+    separator_symbol " "
+    height 30
+    colors {
+        statusline         $white
+        background         $darkblack
+        separator          $white
+#                          BORDER   BACKGROUND  TEXT::
+        focused_workspace  $black   $black      $darkcyan
+        inactive_workspace $black   $black      $darkgrey
+        active_workspace   $black   $black      $red
+        urgent_workspace   $black   $black      $red
+        binding_mode       $red     $red        $white
+    }
+}
+
+bar {
+#    verbose yes
+    status_command i3blocks
+    i3bar_command i3bar
+    output DisplayPort-1
+    position bottom
+    binding_mode_indicator no
+    font pango:DejaVu, FontAwesome 14
+    strip_workspace_numbers yes
+    separator_symbol " "
+    tray_output none
+    height 30
+    colors {
+        statusline         $white
+        background         $darkblack
+        separator          $white
+#                          BORDER   BACKGROUND  TEXT
+        focused_workspace  $black   $black      $darkcyan
+        inactive_workspace $black   $black      $darkgrey
+        active_workspace   $black   $black      $red
+        urgent_workspace   $black   $black      $red
+        binding_mode       $red     $red        $white
+    }
+}
+
+#exec_always ~/.config/i3/scripts/ssh-eval.sh
+
+exec --no-startup-id xrandr --dpi 100
+#exec --no-startup-id xrandr --output HDMI2 --off --output HDMI1 --mode 2560x1440 --pos 2560x0 --rotate normal --output DP1 --mode 2560x1440 --pos 0x0 --rotate normal --output eDP1 --primary --mode 1920x1080 --pos 5120x0 --rotate normal
+#exec --no-startup-id picom -cCGfF -o 0.38 -O 200 -I 200 -t 0 -l 0 -r 3 -D2 -m 0.88
+exec --no-startup-id picom
+#exec --no-startup-id xcompmgr -c -C -t-5 -l-5 -r4.2 -o.55
+exec --no-startup-id greenclip daemon
+exec --no-startup-id pa-applet
+exec --no-startup-id nm-applet
+exec --no-startup-id feh --bg-fill ~/backgrounds/arch-bg.png --bg-fill ~/backgrounds/arch-bg.png --bg-fill ~/backgrounds/arch-bg.png
+
+gaps inner 12
+gaps outer 0
+
+# borders
+set $borders 4
+new_window pixel $borders
+default_floating_border pixel 6
+smart_borders on
+#new_float pixel 5
+
+# Color settings
+client.focused #aab0bc #131822 #aab0bc #ad1d1d #ad1d1d
+client.focused_inactive #aab0bc #131822 #aab0bc #232323 #232323
+client.unfocused #aab0bc #131822 #aab0bc #232323 #232323
+client.urgent #aab0bc #131822 #aab0bc #ad1d1d #ad1d1d
+
+# no borders for some apps
+for_window [class="Firefox"] border pixel 2
+for_window [class="Chromium"] border pixel 2
+for_window [class="Subl"] border pixel 2
+for_window [class="Slack"] border pixel 2
+
+#assign [class="Firefox"] $ws1
+#assign [class="Slack"] $ws2
+
+#exec --no-startup-id firefox
+#exec --no-startup-id slack
+
+#for_window [class="Supertuxkart"] floating enable
+for_window [class="Thunar"] floating enable
+for_window [class="Viewnior"] floating enable
+for_window [class="zoom"] floating enable
+for_window [class="Zoom - Free Account"] floating enable
+for_window [class="Lxappearance"] floating enable
+for_window [class="Gnome-calendar"] floating enable
+for_window [class="Gnome-calculator"] floating enable
+for_window [class="Gnome-calendar"] border pixel 10
+for_window [class="Gnome-calculator"] border pixel 10
